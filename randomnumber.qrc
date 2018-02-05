@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>translator/Lang_ko_KR.qm</file>
+        <file>img/dice.png</file>
+    </qresource>
+</RCC>
