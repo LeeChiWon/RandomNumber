@@ -6,6 +6,8 @@
 #include <QtXlsx>
 #define ROW 0
 #define COLUMN 1
+#define ODD 0
+#define EVEN 1
 
 namespace Ui {
 class MainWindow;
@@ -25,9 +27,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSettings *Setting;
-    QList<int> RandomList;
+    QList<int> RandomNumberList;
+    QList<char> RandomCharList;
 
     int IsRandomNumberCheck(int Number);
+    char IsRandomAsciiCheck(char Alphabet);
 };
 
 #endif // MAINWINDOW_H

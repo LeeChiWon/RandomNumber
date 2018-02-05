@@ -8,10 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     Setting=new QSettings("EachOne","RandomNumber",this);
     ui->lineEdit_LineNumber->setText(Setting->value("LineNumber").toString());
-    ui->lineEdit_RangeHigh->setText(Setting->value("RangeHigh").toString());
-    ui->lineEdit_RangeLow->setText(Setting->value("RangeLow").toString());
     ui->lineEdit_Number->setText(Setting->value("Number").toString());
     ui->comboBox_Type->addItems(QStringList()<<tr("Row")<<tr("Column"));
+    ui->comboBox_Type->setCurrentIndex(Setting->value("ComboType").toInt());
 }
 
 MainWindow::~MainWindow()
@@ -22,40 +21,63 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_ExcelSave_clicked()
 {
     QString FileName = QFileDialog::getSaveFileName(this,tr("Save File"),Setting->value("FilePath").toString(),tr("Excel File (*.xlsx)"));
-
+    QString Str;
     QFile File(FileName);
     if(File.exists())
     {
         File.remove();
     }
-    QXlsx::Document xlsx(FileName);   
+    QXlsx::Document xlsx(FileName);
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
 
     for(int i=1; i<=ui->lineEdit_LineNumber->text().toInt(); i++)
     {
         for(int j=1; j<=ui->lineEdit_Number->text().toInt(); j++)
         {
-            switch(ui->comboBox_Type->currentIndex())
+            switch((qrand()%100+0)%2)
             {
-            case ROW:
-                xlsx.write(i,j,IsRandomNumberCheck(qrand()%ui->lineEdit_RangeHigh->text().toInt()+ui->lineEdit_RangeLow->text().toInt()));
+            case ODD:
+
+                switch(ui->comboBox_Type->currentIndex())
+                {
+                case ROW:
+                    xlsx.write(i,j,IsRandomNumberCheck(qrand()%9+0));
+                    break;
+                case COLUMN:
+                    xlsx.write(j,i,IsRandomNumberCheck(qrand()%9+0));
+                    break;
+                }
                 break;
-            case COLUMN:
-                xlsx.write(j,i,IsRandomNumberCheck(qrand()%ui->lineEdit_RangeHigh->text().toInt()+ui->lineEdit_RangeLow->text().toInt()));
+            case EVEN:
+                //Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                //qDebug()<<Str;
+                switch(ui->comboBox_Type->currentIndex())
+                {
+                case ROW:
+                    //xlsx.write(i,j,Str);
+                    xlsx.write(i,j,QString(IsRandomAsciiCheck(qrand()%26+65)));
+                    break;
+                case COLUMN:
+                   // xlsx.write(j,i,Str);
+                    xlsx.write(j,i,QString(IsRandomAsciiCheck(qrand()%26+65)));
+                    break;
+                }
+                Str.clear();
                 break;
             }
         }
-        RandomList.clear();
+
+        RandomNumberList.clear();
+        RandomCharList.clear();
     }
 
     xlsx.saveAs(FileName);
     xlsx.deleteLater();
 
     Setting->setValue("LineNumber",ui->lineEdit_LineNumber->text());
-    Setting->setValue("RangeHigh",ui->lineEdit_RangeHigh->text());
-    Setting->setValue("RangeLow",ui->lineEdit_RangeLow->text());
     Setting->setValue("Number",ui->lineEdit_Number->text());
     Setting->setValue("FilePath",FileName);
+    Setting->setValue("ComboType",ui->comboBox_Type->currentIndex());
     QMessageBox::information(this,"Success","Excel Saved.",QMessageBox::Ok);
 }
 
@@ -63,15 +85,34 @@ int MainWindow::IsRandomNumberCheck(int Number)
 {
     while(1)
     {
-        if(!RandomList.contains(Number))
+        if(!RandomNumberList.contains(Number))
         {
-            RandomList.append(Number);
+            RandomNumberList.append(Number);
+            //qDebug()<<Number;
             break;
         }
         else
         {
-            Number=qrand()%ui->lineEdit_RangeHigh->text().toInt()+ui->lineEdit_RangeLow->text().toInt();
+            Number=qrand()%9+0;
         }
     }
     return Number;
+}
+
+char MainWindow::IsRandomAsciiCheck(char Alphabet)
+{
+    while(1)
+    {
+        if(!RandomCharList.contains(Alphabet))
+        {
+            RandomCharList.append(Alphabet);
+            //qDebug()<<Alphabet;
+            break;
+        }
+        else
+        {
+            Alphabet=qrand()%26+65;
+        }
+    }
+    return Alphabet;
 }
