@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Setting=new QSettings("EachOne","RandomNumber",this);
     ui->lineEdit_LineNumber->setText(Setting->value("LineNumber").toString());
     ui->lineEdit_Number->setText(Setting->value("Number").toString());
+    ui->lineEdit_CellNumber->setText(Setting->value("CellNumber").toString());
     ui->comboBox_Type->addItems(QStringList()<<tr("Row")<<tr("Column"));
     ui->comboBox_Type->setCurrentIndex(Setting->value("ComboType").toInt());
 }
@@ -34,41 +35,32 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
     {
         for(int j=1; j<=ui->lineEdit_Number->text().toInt(); j++)
         {
-            switch((qrand()%100+0)%2)
+            for(int k=0; k<ui->lineEdit_CellNumber->text().toInt(); k++)
             {
-            case ODD:
+                switch((qrand()%100+0)%2)
+                {
+                case ODD:
+                    Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                    break;
+                case EVEN:
+                    Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                    break;
+                }
+            }
 
-                switch(ui->comboBox_Type->currentIndex())
-                {
-                case ROW:
-                    xlsx.write(i,j,IsRandomNumberCheck(qrand()%9+0));
-                    break;
-                case COLUMN:
-                    xlsx.write(j,i,IsRandomNumberCheck(qrand()%9+0));
-                    break;
-                }
+            switch(ui->comboBox_Type->currentIndex())
+            {
+            case ROW:
+                xlsx.write(i,j,Str);
                 break;
-            case EVEN:
-                //Str.append(IsRandomAsciiCheck(qrand()%26+65));
-                //qDebug()<<Str;
-                switch(ui->comboBox_Type->currentIndex())
-                {
-                case ROW:
-                    //xlsx.write(i,j,Str);
-                    xlsx.write(i,j,QString(IsRandomAsciiCheck(qrand()%26+65)));
-                    break;
-                case COLUMN:
-                   // xlsx.write(j,i,Str);
-                    xlsx.write(j,i,QString(IsRandomAsciiCheck(qrand()%26+65)));
-                    break;
-                }
-                Str.clear();
+            case COLUMN:
+                xlsx.write(j,i,Str);
                 break;
             }
+            Str.clear();
+            RandomNumberList.clear();
+            RandomCharList.clear();
         }
-
-        RandomNumberList.clear();
-        RandomCharList.clear();
     }
 
     xlsx.saveAs(FileName);
@@ -76,6 +68,7 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
 
     Setting->setValue("LineNumber",ui->lineEdit_LineNumber->text());
     Setting->setValue("Number",ui->lineEdit_Number->text());
+    Setting->setValue("CellNumber",ui->lineEdit_CellNumber->text());
     Setting->setValue("FilePath",FileName);
     Setting->setValue("ComboType",ui->comboBox_Type->currentIndex());
     QMessageBox::information(this,"Success","Excel Saved.",QMessageBox::Ok);
