@@ -24,7 +24,19 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
     QList<QString> RandomList;
     QString FileName = QFileDialog::getSaveFileName(this,tr("Save File"),Setting->value("FilePath").toString(),tr("Excel File (*.xlsx)"));
     QString Str;
+    if(FileName.isEmpty())
+    {
+        return;
+    }
     QFile File(FileName);
+    QChar Test;
+    QProgressDialog *ProgressDlg=new QProgressDialog(tr("Waiting..."),NULL,0,100,this);
+    ProgressDlg->setWindowTitle(tr("RandomNumber"));
+    ProgressDlg->setWindowModality(Qt::WindowModal);
+    ProgressDlg->show();
+
+    int Count=1,PreCount=0,Total=ui->lineEdit_LineNumber->text().toInt();
+
     if(File.exists())
     {
         File.remove();
@@ -42,11 +54,14 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
                 {
                     if((qrand()%100+0)%2==1 ||(qrand()%100+0)%2==2 || (qrand()%100+0)%2==3)
                     {
-                        Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                        //Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                        Str.append(QString::number(qrand()%9+0));
                     }
                     else
                     {
-                        Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                        //Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                        Test=qrand()%26+65;
+                        Str.append(Test);
                     }
                     /*switch((qrand()%100+0)%2)
                     {
@@ -58,7 +73,7 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
                         break;
                     }*/
                 }
-                qDebug()<<Str<<RandomList;
+
                 if(!RandomList.contains(Str))
                 {
                     RandomList.append(Str);
@@ -82,18 +97,26 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
             Str.clear();
             RandomNumberList.clear();
             RandomCharList.clear();
-        }
+           // qDebug()<<Total<<Count<<PreCount<<(float)Count/Total*100;
+            //if(Count>0 && PreCount!=(float)Count/Total*100)
+           // {
+                PreCount=(float)Count/Total*100;
+                ProgressDlg->setValue(PreCount);
+            //}
+            Count++;
+        }        
     }
-
     xlsx.saveAs(FileName);
     xlsx.deleteLater();
+    ProgressDlg->deleteLater();
 
     Setting->setValue("LineNumber",ui->lineEdit_LineNumber->text());
     Setting->setValue("Number",ui->lineEdit_Number->text());
     Setting->setValue("CellNumber",ui->lineEdit_CellNumber->text());
     Setting->setValue("FilePath",FileName);
     Setting->setValue("ComboType",ui->comboBox_Type->currentIndex());
-    QMessageBox::information(this,"Success","Excel Saved.",QMessageBox::Ok);
+
+    QMessageBox::information(this,tr("information"),tr("Excel Saved."),QMessageBox::Ok);
 }
 
 int MainWindow::IsRandomNumberCheck(int Number)

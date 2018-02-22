@@ -4,69 +4,70 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.ui" line="26"/>
-        <source>랜덤숫자</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="48"/>
-        <source>랜덤 범위 입력</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="93"/>
-        <source>~</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="118"/>
+        <location filename="mainwindow.ui" line="52"/>
         <source>생성할 줄 수</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="144"/>
+        <location filename="mainwindow.ui" line="78"/>
         <source>엑셀 생성</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="166"/>
-        <source>작은수</source>
-        <translation></translation>
+        <location filename="mainwindow.ui" line="180"/>
+        <source>칸에 나타낼 갯수</source>
+        <translation>칸에 나타낼 갯수</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="188"/>
-        <source>큰수</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="226"/>
+        <location filename="mainwindow.ui" line="113"/>
         <source>줄에 나타낼 갯수</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
+        <location filename="mainwindow.ui" line="26"/>
+        <location filename="mainwindow.cpp" line="34"/>
+        <source>RandomNumber</source>
+        <translation>랜덤숫자</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="135"/>
         <source>생성 배열</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="14"/>
+        <location filename="mainwindow.cpp" line="13"/>
         <source>Row</source>
         <translation>가로</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="14"/>
+        <location filename="mainwindow.cpp" line="13"/>
         <source>Column</source>
         <translation>세로</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="24"/>
+        <location filename="mainwindow.cpp" line="25"/>
         <source>Save File</source>
         <translation>파일 저장</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="24"/>
+        <location filename="mainwindow.cpp" line="25"/>
         <source>Excel File (*.xlsx)</source>
         <translation>엑셀 파일 (*.xlsx)</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="33"/>
+        <source>Waiting...</source>
+        <translation>기다려주세요...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="119"/>
+        <source>information</source>
+        <translation>정보</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="119"/>
+        <source>Excel Saved.</source>
+        <translation>엑셀이 저장되었습니다.</translation>
     </message>
 </context>
 </TS>
