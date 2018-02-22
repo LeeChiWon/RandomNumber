@@ -21,6 +21,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_ExcelSave_clicked()
 {
+    QList<QString> RandomList;
     QString FileName = QFileDialog::getSaveFileName(this,tr("Save File"),Setting->value("FilePath").toString(),tr("Excel File (*.xlsx)"));
     QString Str;
     QFile File(FileName);
@@ -35,16 +36,37 @@ void MainWindow::on_pushButton_ExcelSave_clicked()
     {
         for(int j=1; j<=ui->lineEdit_Number->text().toInt(); j++)
         {
-            for(int k=0; k<ui->lineEdit_CellNumber->text().toInt(); k++)
+            while(1)
             {
-                switch((qrand()%100+0)%2)
+                for(int k=0; k<ui->lineEdit_CellNumber->text().toInt(); k++)
                 {
-                case ODD:
-                    Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                    if((qrand()%100+0)%2==1 ||(qrand()%100+0)%2==2 || (qrand()%100+0)%2==3)
+                    {
+                        Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                    }
+                    else
+                    {
+                        Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                    }
+                    /*switch((qrand()%100+0)%2)
+                    {
+                    case ODD:
+                        Str.append(QString::number(IsRandomNumberCheck(qrand()%9+0)));
+                        break;
+                    case EVEN:
+                        Str.append(IsRandomAsciiCheck(qrand()%26+65));
+                        break;
+                    }*/
+                }
+                qDebug()<<Str<<RandomList;
+                if(!RandomList.contains(Str))
+                {
+                    RandomList.append(Str);
                     break;
-                case EVEN:
-                    Str.append(IsRandomAsciiCheck(qrand()%26+65));
-                    break;
+                }
+                else
+                {
+                    Str.clear();
                 }
             }
 

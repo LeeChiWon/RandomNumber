@@ -30,6 +30,7 @@ private:
     QList<int> RandomNumberList;
     QList<char> RandomCharList;
 
+
     int IsRandomNumberCheck(int Number);
     char IsRandomAsciiCheck(char Alphabet);
 };
